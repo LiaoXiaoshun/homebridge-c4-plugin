@@ -2,10 +2,12 @@ var request = require("request");
 var pollingtoevent = require('polling-to-event');
 var url = require('url');
 var Service = require("hap-nodejs").Service;
+var Switch = require('./devices/switch');
 var light = require('./devices/light');
 var thermostat = require('./devices/thermostat');
 
 var allDeviceConfig = {
+  "Switch" : Switch,
   "light" : light,
   "thermostat": thermostat
 };
@@ -73,6 +75,9 @@ c4Accessory.prototype.getServices = function() {
 
 c4Accessory.prototype.computeService = function() {
   switch (this.deviceType) {
+    case "Switch":
+      this.service = new Service.Switch(this.name);
+      break;
     case "light":
       this.service = new Service.Lightbulb(this.name);
       break;
